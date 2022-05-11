@@ -46,7 +46,36 @@ const products = [
   },
 ];
 
+const users = [
+  { 
+    name: 'Eric Milfont',
+    email: 'eric.milfont@gmail.com',
+    password: 'admin123',
+
+  },
+  { 
+    name: 'Outro Milfont',
+    email: 'outro.milfont@gmail.com',
+    password: 'admin123',
+
+  }
+];
+
+const posts = [
+  { 
+    title: 'Welcome to this new post',
+    published: true,
+    authorId: 1
+  },
+  { 
+    title: 'Welcome to my second post',
+    published: true,
+    authorId: 1
+  }
+]
 module.exports = {
   products,
   categories,
+  users,
+  posts
 };

@@ -2,7 +2,7 @@ import Head from 'next/head';
 import Product from '../components/Product';
 import prisma from '../lib/prisma';
 
-export default function Home({ products }) {
+export default function Home({ products }, { users }) {
   return (
     <div>
       <Head>
@@ -21,6 +21,19 @@ export default function Home({ products }) {
             <Product product={product} key={product.id} />
           ))}
         </div>
+        <div className="hr">User2</div>
+        <div className="grid md:grid-cols-3 sm:grid-cols-2 grid-cols-1 justify-items-center  gap-4">
+          {users.map((user) => (
+            
+            <div className="flex" key={user.id}>
+              <p>user: {user.name}</p>
+              <p>user id: {user.id}</p>
+            </div>
+            
+          ))}
+        </div>
+
+
       </main>
 
       <footer></footer>
@@ -29,18 +42,30 @@ export default function Home({ products }) {
 }
 
 export async function getStaticProps(context) {
-  const data = await prisma.product.findMany({
+  const productData = await prisma.product.findMany({
     include: {
       category: true,
     },
   });
 
   //convert decimal value to string to pass through as json
-  const products = data.map((product) => ({
+  const products = productData.map((product) => ({
     ...product,
     price: product.price.toString(),
   }));
+  console.log(products);
+  // USER DATA
+  const userData = await prisma.user.findMany();
+  console.log(userData);
+  
+  const users = userData.map((user) => ({
+    ...user,
+    name: user.name.toString(),
+
+  }));
+
+  
   return {
-    props: { products },
+    props: { users, products  },
   };
 }

@@ -1,5 +1,5 @@
 const { PrismaClient } = require('@prisma/client');
-const { categories, products } = require('./data.js');
+const { categories, products, users, posts } = require('./data.js');
 const prisma = new PrismaClient();
 
 const load = async () => {
@@ -9,6 +9,9 @@ const load = async () => {
 
     await prisma.product.deleteMany();
     console.log('Deleted records in product table');
+    
+    await prisma.user.deleteMany();
+    console.log('Deleted records in user table');
 
     await prisma.$queryRaw`ALTER TABLE Product AUTO_INCREMENT = 1`;
     console.log('reset product auto increment to 1');
@@ -25,6 +28,18 @@ const load = async () => {
       data: products,
     });
     console.log('Added product data');
+
+    
+
+    await prisma.user.createMany({
+      data: users,
+    });
+    console.log('Added users data');
+
+    await prisma.post.createMany({
+      data: posts,
+    });
+    console.log('Added posts data');
   } catch (e) {
     console.error(e);
     process.exit(1);
